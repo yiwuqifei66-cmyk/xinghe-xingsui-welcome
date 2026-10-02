@@ -1,0 +1,9 @@
+# Local review material and screenshots
+PRODUCT.md
+docs/
+deployment/
+线下体验活动智能引导小程序开发计划.md
+*.log
+node_modules/
+.DS_Store
+Thumbs.db
