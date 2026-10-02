@@ -4,6 +4,8 @@
 
 ## 查看
 
+[在线欢迎页](https://yiwuqifei66-cmyk.github.io/xinghe-xingsui-welcome/) · [GitHub 仓库](https://github.com/yiwuqifei66-cmyk/xinghe-xingsui-welcome)
+
 直接用浏览器打开 `index.html`，并保留同目录的 `assets` 文件夹。页面样式与脚本包含在 HTML 内，桌宠动画使用本地 WebP，不依赖网络、外部字体或第三方库。
 
 也可以在本目录执行：
@@ -28,12 +30,12 @@ node dev-server.cjs
 - `index.html`：可直接交付的欢迎页。
 - `assets/blue-star-spirit-animated.webp`：透明背景桌宠动画，保留原始 120 帧。
 - `dev-server.cjs`：可选本地预览工具，需要 Node.js，无需安装依赖。
-- `docs/`：此前的活动框架和参考项目分析，保留作历史讨论资料。
+- `docs/`：此前的活动框架和参考项目分析，仅保留在本地，不上传公开仓库。
 
 ## GitHub Pages 部署
 
 网站只需要 `index.html`、`assets/` 和 `.nojekyll`，无需构建。
 
-在 GitHub 仓库的 Settings → Pages 中选择 Deploy from a branch，然后选择 `main` 分支和 `/(root)` 目录。部署完成后使用 Pages 显示的 HTTPS 地址访问。
+GitHub Pages 已配置为 Deploy from a branch，使用 `main` 分支和 `/(root)` 目录。后续修改页面或素材后提交并推送到 `main`，网站会自动重新部署。
 
 目前是浏览器网页，未封装为微信原生小程序。
