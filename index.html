@@ -137,7 +137,7 @@
         display: block;
         width: 28px;
         height: 40px;
-        margin: 0 auto 26px;
+        margin: 0 auto 22px;
         color: var(--gold);
         opacity: 0;
         filter: drop-shadow(0 0 12px rgb(232 183 108 / 55%));
@@ -147,15 +147,41 @@
       h1 { margin: 0; font-weight: 400; }
       .greeting, .brand, .course { display: block; }
 
+      .recipient {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        justify-content: center;
+        gap: .12em .3em;
+        margin: 0 auto 18px;
+        max-width: 100%;
+        color: var(--mist);
+        font-size: clamp(18px, 1.7vw, 24px);
+        font-weight: 400;
+        line-height: 1.5;
+        letter-spacing: .08em;
+        animation: text-in 1.25s .16s both;
+      }
+
+      .recipient-name {
+        min-width: 0;
+        max-width: 100%;
+        color: #f3d5a5;
+        font-family: "Songti SC", "STSong", "SimSun", serif;
+        font-size: 1.3em;
+        line-height: 1.5;
+        overflow-wrap: anywhere;
+      }
+
       .greeting {
-        margin-bottom: 29px;
+        margin-bottom: 24px;
         font-size: clamp(15px, 1.4vw, 19px);
         font-weight: 400;
         line-height: 1.6;
         letter-spacing: .46em;
         text-indent: .46em;
         color: var(--mist);
-        animation: text-in 1.25s .16s both;
+        animation: text-in 1.25s .5s both;
       }
 
       .brand {
@@ -166,7 +192,7 @@
         letter-spacing: .11em;
         text-indent: .11em;
         white-space: nowrap;
-        animation: title-focus 1.7s .35s both;
+        animation: title-focus 1.7s .72s both;
       }
 
       .brand-ink {
@@ -178,7 +204,7 @@
         background-clip: text;
         -webkit-text-fill-color: transparent;
         filter: drop-shadow(0 0 22px rgb(232 183 108 / 19%));
-        animation: ink-reveal 2.4s .35s cubic-bezier(.22, 1, .36, 1) both;
+        animation: ink-reveal 2.4s .72s cubic-bezier(.22, 1, .36, 1) both;
       }
 
       .course {
@@ -189,7 +215,7 @@
         line-height: 1.7;
         letter-spacing: .36em;
         text-indent: .36em;
-        animation: text-in 1.4s .82s both;
+        animation: text-in 1.4s 1.05s both;
       }
 
       .closing-mark {
@@ -199,7 +225,7 @@
         gap: 16px;
         margin: 32px auto 0;
         color: var(--gold);
-        animation: mark-in 1.6s 1.15s both;
+        animation: mark-in 1.6s 1.35s both;
       }
 
       .closing-mark::before, .closing-mark::after {
@@ -317,11 +343,12 @@
         .welcome { padding-inline: 20px; }
         .invitation { padding: 36px 0 42px; margin-bottom: 8svh; }
         .glass-halo { inset: 10px -2px 0; border-radius: 22px; }
-        .opening-mark { width: 23px; height: 34px; margin-bottom: 26px; }
-        .greeting { margin-bottom: 23px; font-size: 15px; }
+        .opening-mark { width: 23px; height: 34px; margin-bottom: 20px; }
+        .recipient { margin-bottom: 16px; font-size: 18px; }
+        .greeting { margin-bottom: 20px; font-size: 15px; }
         .brand { font-size: clamp(43px, 14vw, 78px); letter-spacing: .075em; text-indent: .075em; }
         .course { margin-top: 24px; font-size: 21px; letter-spacing: .28em; text-indent: .28em; }
-        .closing-mark { margin-top: 32px; }
+        .closing-mark { margin-top: 28px; }
         .pet-companion {
           right: max(14px, env(safe-area-inset-right));
           bottom: max(12px, env(safe-area-inset-bottom));
@@ -335,10 +362,25 @@
         .course { font-size: 18px; }
       }
 
+      @media (max-height: 700px) and (max-width: 600px) {
+        .welcome {
+          padding-top: max(24px, env(safe-area-inset-top));
+          padding-bottom: max(188px, calc(env(safe-area-inset-bottom) + 188px));
+        }
+        .invitation { padding: 26px 0 28px; margin-bottom: 0; }
+        .opening-mark { width: 20px; height: 28px; margin-bottom: 14px; }
+        .recipient { margin-bottom: 10px; font-size: 17px; }
+        .greeting { margin-bottom: 14px; font-size: 14px; }
+        .brand { font-size: clamp(40px, 14vw, 60px); }
+        .course { margin-top: 16px; font-size: 18px; }
+        .closing-mark { margin-top: 20px; }
+      }
+
       @media (max-height: 500px) and (min-width: 601px) {
         .welcome { padding-block: 28px; }
         .invitation { padding: 16px 24px 24px; margin-bottom: 0; }
         .opening-mark { width: 20px; height: 26px; margin-bottom: 12px; }
+        .recipient { margin-bottom: 8px; font-size: 17px; }
         .greeting { margin-bottom: 10px; font-size: 14px; }
         .brand { font-size: clamp(46px, 8vw, 80px); }
         .course { margin-top: 10px; font-size: 20px; }
@@ -377,6 +419,7 @@
           <path d="M14 1C14 14 11 18 2 20C11 22 14 26 14 39C14 26 17 22 26 20C17 18 14 14 14 1Z" stroke="currentColor" stroke-width=".8" />
           <circle cx="14" cy="20" r="1.4" fill="currentColor" />
         </svg>
+        <p class="recipient"><span>亲爱的</span><span class="recipient-name" id="attendee-name">小明</span></p>
         <h1 aria-label="欢迎来到星禾星穗线下体验课">
           <span class="greeting">欢迎来到</span>
           <span class="brand"><span class="brand-ink">星禾星穗</span></span>
