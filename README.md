@@ -40,3 +40,16 @@ node dev-server.cjs
 GitHub Pages 已配置为 Deploy from a branch，使用 `main` 分支和 `/(root)` 目录。后续修改页面或素材后提交并推送到 `main`，网站会自动重新部署。
 
 目前是浏览器网页，未封装为微信原生小程序。
+
+## 字体与排版提案
+
+[打开四版对比](https://yiwuqifei66-cmyk.github.io/xinghe-xingsui-welcome/typography-preview.html)。提案分别突出姓名、欢迎语、课程主题及连贯阅读，正式 `index.html` 等方案选定后再调整。
+
+对比页支持切换字体、调整字号与字距、替换示例姓名。两款字体来自 Google Fonts 官方仓库，字体和 OFL 许可文件放在 `assets/fonts/`，无需连接外部字体服务。
+
+四个预览由 `tools/build-typography-previews.cjs` 读取正式页面并添加独立排版样式生成。重新生成后可运行本地预览：
+
+```powershell
+node tools/build-typography-previews.cjs
+node dev-server.cjs
+```

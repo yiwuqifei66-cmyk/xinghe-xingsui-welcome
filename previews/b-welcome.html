@@ -1,0 +1,718 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#060d1c" />
+    <meta name="description" content="欢迎来到星禾星穗线下体验课" />
+    <title>B · 欢迎主角 · 星禾星穗欢迎页</title>
+    <link rel="stylesheet" href="../assets/fonts/preview-fonts.css" />
+    <style>
+      :root {
+        color-scheme: dark;
+        --night: #070b15;
+        --deep-blue: #15263c;
+        --starlight: #fff0d3;
+        --gold: #e8b76c;
+        --ember: #e76c3f;
+        --mist: #d1c8c2;
+        --drift-x: 0px;
+        --drift-y: 0px;
+      }
+
+      *, *::before, *::after { box-sizing: border-box; }
+      html { min-height: 100%; background: var(--night); }
+      body {
+        margin: 0;
+        min-width: 280px;
+        color: var(--starlight);
+        font-family: "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .welcome {
+        position: relative;
+        isolation: isolate;
+        display: grid;
+        place-items: center;
+        min-height: 100vh;
+        min-height: 100svh;
+        overflow: hidden;
+        padding: max(40px, env(safe-area-inset-top)) 24px max(48px, env(safe-area-inset-bottom));
+        background:
+          radial-gradient(ellipse at 50% 37%, rgb(26 40 61 / 78%), transparent 54%),
+          radial-gradient(ellipse at 5% 74%, rgb(126 41 25 / 30%), transparent 48%),
+          radial-gradient(ellipse at 94% 75%, rgb(125 56 29 / 22%), transparent 42%),
+          linear-gradient(180deg, #070b15, #11131f 60%, #100d13);
+      }
+
+      .atmosphere {
+        position: absolute;
+        z-index: -2;
+        inset: -40px;
+        pointer-events: none;
+        background:
+          radial-gradient(ellipse at 50% 70%, rgb(232 183 108 / 17%), transparent 39%),
+          radial-gradient(ellipse at 12% 61%, rgb(231 108 63 / 20%), transparent 35%),
+          radial-gradient(ellipse at 83% 50%, rgb(134 70 58 / 13%), transparent 33%);
+        transform: translate(var(--drift-x), var(--drift-y));
+        transition: transform 1.8s cubic-bezier(.2, .7, .3, 1);
+      }
+
+      .stars {
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        opacity: 1;
+      }
+
+      .tech-ground {
+        position: absolute;
+        z-index: -1;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        opacity: 0;
+        animation: scene-in 2.4s .25s ease-out forwards;
+        mask-image: linear-gradient(transparent 64%, #000 85%);
+      }
+
+      .vignette {
+        position: absolute;
+        z-index: -1;
+        inset: 0;
+        pointer-events: none;
+        background: radial-gradient(ellipse at 50% 44%, transparent 37%, rgb(3 5 13 / 32%) 100%);
+      }
+
+      .invitation {
+        position: relative;
+        isolation: isolate;
+        width: 100%;
+        max-width: 1080px;
+        text-align: center;
+        padding: 40px 24px 58px;
+        margin-bottom: 7svh;
+      }
+
+      .glass-halo {
+        position: absolute;
+        inset: 18px 5% 10px;
+        z-index: -1;
+        pointer-events: none;
+        border-radius: 28px;
+        border: 1px solid rgb(232 183 108 / 14%);
+        background: linear-gradient(135deg, rgb(28 38 53 / 15%), rgb(12 16 25 / 28%) 55%, rgb(53 33 24 / 13%));
+        box-shadow: inset 0 1px 0 rgb(255 235 193 / 7%), 0 24px 100px rgb(0 0 0 / 12%);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        animation: glass-in 1.8s .35s both;
+      }
+
+      .glass-halo::before, .glass-halo::after {
+        content: "";
+        position: absolute;
+        left: 20%;
+        right: 20%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgb(255 219 157 / 58%), transparent);
+      }
+
+      .glass-halo::before { top: -1px; }
+      .glass-halo::after { bottom: -1px; opacity: .5; }
+
+      .title-aura {
+        position: absolute;
+        inset: 14% -6% 16%;
+        z-index: -1;
+        pointer-events: none;
+        background: radial-gradient(ellipse at 50% 53%, rgb(231 151 74 / 14%), transparent 64%);
+        animation: aura-breathe 3.5s ease-in-out infinite;
+      }
+
+      .opening-mark {
+        display: block;
+        width: 28px;
+        height: 40px;
+        margin: 0 auto 22px;
+        color: var(--gold);
+        opacity: 0;
+        filter: drop-shadow(0 0 12px rgb(232 183 108 / 55%));
+        animation: mark-in 1.6s .08s ease-out forwards;
+      }
+
+      h1 { margin: 0; font-weight: 400; }
+      .greeting, .brand, .course { display: block; }
+
+      .recipient {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        justify-content: center;
+        gap: .12em .3em;
+        margin: 0 auto 18px;
+        max-width: 100%;
+        color: var(--mist);
+        font-size: clamp(18px, 1.7vw, 24px);
+        font-weight: 400;
+        line-height: 1.5;
+        letter-spacing: .08em;
+        animation: text-in 1.25s .16s both;
+      }
+
+      .recipient-name {
+        min-width: 0;
+        max-width: 100%;
+        color: #f3d5a5;
+        font-family: "Songti SC", "STSong", "SimSun", serif;
+        font-size: 1.3em;
+        line-height: 1.5;
+        overflow-wrap: anywhere;
+      }
+
+      .greeting {
+        margin-bottom: 24px;
+        font-size: clamp(15px, 1.4vw, 19px);
+        font-weight: 400;
+        line-height: 1.6;
+        letter-spacing: .46em;
+        text-indent: .46em;
+        color: var(--mist);
+        animation: text-in 1.25s .5s both;
+      }
+
+      .brand {
+        font-family: "Songti SC", "STSong", "SimSun", serif;
+        font-size: clamp(48px, 10.2vw, 146px);
+        font-weight: 400;
+        line-height: 1.26;
+        letter-spacing: .11em;
+        text-indent: .11em;
+        white-space: nowrap;
+        animation: title-focus 1.7s .72s both;
+      }
+
+      .brand-ink {
+        color: var(--starlight);
+        background: linear-gradient(110deg, #c58943 0%, #f4c77e 16%, #fff1d3 35%, #fffaf0 44%, #f4d6a4 50%, #e1ac60 63%, #fff2db 78%, #cf924d 100%);
+        background-size: 220% 100%;
+        background-position: 85% 50%;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        filter: drop-shadow(0 0 22px rgb(232 183 108 / 19%));
+        animation: ink-reveal 2.4s .72s cubic-bezier(.22, 1, .36, 1) both;
+      }
+
+      .course {
+        margin-top: 29px;
+        color: #f1ddba;
+        font-size: clamp(20px, 2.2vw, 30px);
+        font-weight: 300;
+        line-height: 1.7;
+        letter-spacing: .36em;
+        text-indent: .36em;
+        animation: text-in 1.4s 1.05s both;
+      }
+
+      .closing-mark {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        margin: 32px auto 0;
+        color: var(--gold);
+        animation: mark-in 1.6s 1.35s both;
+      }
+
+      .closing-mark::before, .closing-mark::after {
+        content: "";
+        width: clamp(35px, 5vw, 62px);
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgb(232 183 108 / 60%));
+      }
+
+      .closing-mark::after { transform: rotate(180deg); }
+      .closing-mark svg { width: 8px; height: 8px; }
+
+      .pet-companion {
+        position: fixed;
+        z-index: 10;
+        right: max(24px, env(safe-area-inset-right));
+        bottom: max(18px, env(safe-area-inset-bottom));
+        width: clamp(100px, 10vw, 132px);
+      }
+
+      .pet-button {
+        display: block;
+        width: 100%;
+        padding: 0;
+        border: 0;
+        border-radius: 22px;
+        background: transparent;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        transition: transform 240ms cubic-bezier(.22, 1, .36, 1);
+      }
+
+      .pet-button img {
+        display: block;
+        width: 100%;
+        height: auto;
+        user-select: none;
+        filter: drop-shadow(0 8px 18px rgb(39 121 212 / 24%));
+      }
+
+      .pet-button:active { transform: scale(.96); }
+      .pet-button:focus-visible { outline: 2px solid var(--gold); outline-offset: 6px; }
+      @media (hover: hover) { .pet-button:hover { transform: translateY(-4px); } }
+
+      .pet-speech {
+        position: absolute;
+        right: 8px;
+        bottom: calc(100% + 10px);
+        width: max-content;
+        max-width: calc(100vw - 48px);
+        padding: 13px 18px;
+        border: 1px solid rgb(179 211 243 / 85%);
+        border-radius: 18px;
+        background: #edf5ff;
+        color: #253d5c;
+        box-shadow: 0 8px 30px rgb(0 0 0 / 24%), 0 0 24px rgb(83 155 233 / 10%);
+        font-size: 15px;
+        line-height: 1.6;
+        animation: speech-in 240ms cubic-bezier(.22, 1, .36, 1) both;
+        transform-origin: calc(100% - 32px) 100%;
+      }
+
+      .pet-speech[hidden] { display: none; }
+      .pet-speech::after {
+        content: "";
+        position: absolute;
+        right: 29px;
+        bottom: -6px;
+        width: 11px;
+        height: 11px;
+        background: #edf5ff;
+        border-right: 1px solid rgb(179 211 243 / 85%);
+        border-bottom: 1px solid rgb(179 211 243 / 85%);
+        transform: rotate(45deg);
+      }
+
+      @keyframes speech-in {
+        from { opacity: 0; transform: translateY(7px) scale(.94); }
+        to { opacity: 1; transform: none; }
+      }
+
+      @keyframes text-in {
+        from { opacity: 0; transform: translateY(16px); filter: blur(7px); }
+        to { opacity: 1; transform: translateY(0); filter: blur(0); }
+      }
+
+      @keyframes title-focus {
+        from { opacity: 0; transform: translateY(18px) scale(.975); filter: blur(9px); }
+        to { opacity: 1; transform: none; filter: blur(0); }
+      }
+
+      @keyframes ink-reveal {
+        from { background-position: 0% 50%; }
+        to { background-position: 85% 50%; }
+      }
+
+      @keyframes glass-in {
+        from { opacity: 0; transform: perspective(1200px) rotateX(5deg) translateY(12px); }
+        to { opacity: 1; transform: none; }
+      }
+
+      @keyframes aura-breathe {
+        0%, 100% { opacity: .55; transform: scale(.97); }
+        50% { opacity: 1; transform: scale(1.03); }
+      }
+
+      @keyframes mark-in {
+        from { opacity: 0; transform: scale(.86); }
+        to { opacity: .8; transform: scale(1); }
+      }
+
+      @keyframes scene-in { from { opacity: 0; } to { opacity: .8; } }
+
+      @media (max-width: 600px) {
+        .welcome { padding-inline: 20px; }
+        .invitation { padding: 36px 0 42px; margin-bottom: 8svh; }
+        .glass-halo { inset: 10px -2px 0; border-radius: 22px; }
+        .opening-mark { width: 23px; height: 34px; margin-bottom: 20px; }
+        .recipient { margin-bottom: 16px; font-size: 18px; }
+        .greeting { margin-bottom: 20px; font-size: 15px; }
+        .brand { font-size: clamp(43px, 14vw, 78px); letter-spacing: .075em; text-indent: .075em; }
+        .course { margin-top: 24px; font-size: 21px; letter-spacing: .28em; text-indent: .28em; }
+        .closing-mark { margin-top: 28px; }
+        .pet-companion {
+          right: max(14px, env(safe-area-inset-right));
+          bottom: max(12px, env(safe-area-inset-bottom));
+          width: 108px;
+        }
+        .pet-speech { font-size: 14px; padding: 11px 15px; }
+      }
+
+      @media (max-width: 340px) {
+        .brand { font-size: 40px; }
+        .course { font-size: 18px; }
+      }
+
+      @media (max-height: 700px) and (max-width: 600px) {
+        .welcome {
+          padding-top: max(24px, env(safe-area-inset-top));
+          padding-bottom: max(188px, calc(env(safe-area-inset-bottom) + 188px));
+        }
+        .invitation { padding: 26px 0 28px; margin-bottom: 0; }
+        .opening-mark { width: 20px; height: 28px; margin-bottom: 14px; }
+        .recipient { margin-bottom: 10px; font-size: 17px; }
+        .greeting { margin-bottom: 14px; font-size: 14px; }
+        .brand { font-size: clamp(40px, 14vw, 60px); }
+        .course { margin-top: 16px; font-size: 18px; }
+        .closing-mark { margin-top: 20px; }
+      }
+
+      @media (max-height: 500px) and (min-width: 601px) {
+        .welcome { padding-block: 28px; }
+        .invitation { padding: 16px 24px 24px; margin-bottom: 0; }
+        .opening-mark { width: 20px; height: 26px; margin-bottom: 12px; }
+        .recipient { margin-bottom: 8px; font-size: 17px; }
+        .greeting { margin-bottom: 10px; font-size: 14px; }
+        .brand { font-size: clamp(46px, 8vw, 80px); }
+        .course { margin-top: 10px; font-size: 20px; }
+        .closing-mark { margin-top: 18px; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { animation: none !important; transition: none !important; }
+        .opening-mark, .closing-mark { opacity: .8; }
+        .tech-ground { opacity: .8; }
+      }
+    </style>
+    <style>
+  :root { --type-scale: 1; --type-tracking: .04em; }
+  .welcome { padding-inline: 24px; }
+  .invitation { max-width: 860px; padding: 36px 14px 42px; margin-bottom: 9svh; }
+  .opening-mark { width: 22px; height: 30px; margin-bottom: 24px; }
+  .recipient { margin-bottom: 24px; font-family: var(--preview-font, var(--scheme-font)); font-size: 19px; letter-spacing: .035em; }
+  .recipient-name {
+    font-family: var(--preview-font, var(--scheme-font));
+    font-size: calc(var(--name-size) * var(--type-scale));
+    line-height: 1.3;
+    color: #f6d998;
+    letter-spacing: var(--type-tracking);
+  }
+  .greeting, .brand, .course {
+    font-family: var(--preview-font, var(--scheme-font));
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: var(--type-tracking);
+    text-indent: 0;
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
+  .greeting { font-size: calc(var(--welcome-size) * var(--type-scale)); color: #fff1d5; margin-bottom: 18px; }
+  .brand { font-size: calc(var(--brand-size) * var(--type-scale)); color: #edd4ac; }
+  .course { font-size: calc(var(--course-size) * var(--type-scale)); color: #fff1d5; margin-top: 10px; }
+  .brand-ink {
+    font-family: inherit; color: inherit; background: none;
+    -webkit-text-fill-color: currentColor; filter: none;
+  }
+  .recipient, .greeting, .brand, .brand-ink, .course, .opening-mark, .closing-mark, .glass-halo, .tech-ground {
+    animation: none; opacity: 1; transform: none; filter: none;
+  }
+  .tech-ground { opacity: .8; }
+  .closing-mark { margin-top: 28px; }
+  @media (max-height: 700px) and (max-width: 600px) {
+    .welcome { padding-top: 22px; padding-bottom: 188px; }
+    .invitation { padding: 24px 8px 28px; margin-bottom: 0; }
+    .opening-mark { margin-bottom: 16px; }
+    .recipient { margin-bottom: 18px; }
+    .greeting { margin-bottom: 14px; }
+    .closing-mark { margin-top: 22px; }
+  }
+
+      :root { --scheme-font: "ZCOOL QingKe HuangYou", sans-serif; --name-size: 28px; --welcome-size: 62px; --brand-size: 30px; --course-size: 32px; }
+      .recipient { margin-bottom: 30px; }
+      .greeting { color: #f6d998; margin-bottom: 26px; }
+      @media (max-width: 600px) { .greeting { font-size: min(calc(var(--welcome-size) * var(--type-scale)), calc((100vw - 88px) / 4.7)); } }
+    
+  @media (max-height: 700px) and (max-width: 600px) {
+    .welcome { padding-top: 16px; }
+    .invitation { padding-block: 16px 18px; }
+    .opening-mark { margin-bottom: 14px; }
+    .recipient { margin-bottom: 20px; }
+    .recipient-name { font-size: min(calc(var(--name-size) * var(--type-scale)), 19vw); }
+    .greeting { margin-bottom: 16px; }
+    .closing-mark { margin-top: 16px; }
+  }
+</style>
+  </head>
+  <body>
+    <main class="welcome" aria-label="星禾星穗线下体验课欢迎页">
+      <div class="atmosphere" aria-hidden="true"></div>
+      <canvas class="stars" aria-hidden="true"></canvas>
+      <svg class="tech-ground" viewBox="0 0 1440 900" preserveAspectRatio="none" fill="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="ground-light" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#e8b76c" stop-opacity=".08" />
+            <stop offset="1" stop-color="#e76c3f" stop-opacity=".32" />
+          </linearGradient>
+        </defs>
+        <g stroke="url(#ground-light)" stroke-width="1">
+          <path d="M720 580 -540 900M720 580 -330 900M720 580 -120 900M720 580 90 900M720 580 300 900M720 580 510 900M720 580 720 900M720 580 930 900M720 580 1140 900M720 580 1350 900M720 580 1560 900M720 580 1770 900M720 580 1980 900" />
+          <path d="M0 615H1440M0 632H1440M0 658H1440M0 696H1440M0 750H1440M0 824H1440" />
+        </g>
+      </svg>
+      <div class="vignette" aria-hidden="true"></div>
+
+      <div class="invitation">
+        <div class="glass-halo" aria-hidden="true"></div>
+        <div class="title-aura" aria-hidden="true"></div>
+        <svg class="opening-mark" viewBox="0 0 28 40" fill="none" aria-hidden="true">
+          <path d="M14 1C14 14 11 18 2 20C11 22 14 26 14 39C14 26 17 22 26 20C17 18 14 14 14 1Z" stroke="currentColor" stroke-width=".8" />
+          <circle cx="14" cy="20" r="1.4" fill="currentColor" />
+        </svg>
+        <p class="recipient"><span>亲爱的</span><span class="recipient-name" id="attendee-name">小明</span></p>
+        <h1 aria-label="欢迎来到星禾星穗线下体验课">
+          <span class="greeting">欢迎来到</span>
+          <span class="brand"><span class="brand-ink">星禾星穗</span></span>
+          <span class="course">线下体验课</span>
+        </h1>
+        <div class="closing-mark" aria-hidden="true">
+          <svg viewBox="0 0 8 8"><path d="M4 0 5 3 8 4 5 5 4 8 3 5 0 4 3 3Z" fill="currentColor" /></svg>
+        </div>
+      </div>
+    </main>
+    <aside class="pet-companion" aria-label="星小禾">
+      <div class="pet-speech" id="pet-speech" role="status" aria-live="polite" hidden>星小禾欢迎你呀</div>
+      <button class="pet-button" type="button" aria-label="和星小禾打招呼" aria-controls="pet-speech" aria-expanded="false">
+        <img src="../assets/blue-star-spirit-animated.webp" width="384" height="488" alt="星小禾，戴着星星帽子的蓝色小精灵" draggable="false" />
+      </button>
+    </aside>
+    <script>
+  (() => {
+    const params = new URLSearchParams(location.search);
+    const name = params.get('name');
+    if (name) document.querySelector('#attendee-name').textContent = name.slice(0, 16);
+    const font = { playful: '"ZCOOL KuaiLe", sans-serif', butter: '"ZCOOL QingKe HuangYou", sans-serif' }[params.get('font')];
+    if (font) document.documentElement.style.setProperty('--preview-font', font);
+    const scale = Number(params.get('scale') || 100);
+    const tracking = Number(params.get('tracking') || 4);
+    if (Number.isFinite(scale)) document.documentElement.style.setProperty('--type-scale', String(Math.max(85, Math.min(115, scale)) / 100));
+    if (Number.isFinite(tracking)) document.documentElement.style.setProperty('--type-tracking', Math.max(0, Math.min(12, tracking)) / 100 + 'em');
+  })();
+</script>
+    <script>
+      (() => {
+        const button = document.querySelector('.pet-button');
+        const speech = document.querySelector('.pet-speech');
+
+        function setSpeechOpen(open) {
+          speech.hidden = !open;
+          button.setAttribute('aria-expanded', String(open));
+        }
+
+        button.addEventListener('click', () => setSpeechOpen(speech.hidden));
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape') setSpeechOpen(false);
+        });
+      })();
+
+      (() => {
+        const scene = document.querySelector('.welcome');
+        const canvas = document.querySelector('.stars');
+        const context = canvas.getContext('2d');
+        if (!context) return;
+
+        const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+        let width = 0;
+        let height = 0;
+        let stars = [];
+        let frameId = 0;
+        let lastFrame = 0;
+        let elapsed = 0;
+
+        function resize() {
+          const bounds = scene.getBoundingClientRect();
+          width = bounds.width;
+          height = bounds.height;
+          const ratio = 1;
+          canvas.width = Math.round(width * ratio);
+          canvas.height = Math.round(height * ratio);
+          context.setTransform(ratio, 0, 0, ratio, 0, 0);
+          const count = Math.min(118, Math.max(48, Math.round(width * height / 12000)));
+          stars = Array.from({ length: count }, () => ({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            radius: Math.random() * 1.2 + .35,
+            brightness: Math.random() * .45 + .16,
+            phase: Math.random() * Math.PI * 2,
+            depth: Math.random() * .8 + .3,
+            warm: Math.random() > .35,
+          }));
+          draw();
+        }
+
+        function orbitPoint(angle, offset = 0) {
+          const slowLift = motionPreference.matches ? 0 : Math.sin(elapsed * .00022) * height * .003;
+          return {
+            x: width * (.5 + Math.cos(angle) * .67),
+            y: height * (.74 + Math.sin(angle) * .092 - Math.cos(angle) * .055 + offset) + slowLift,
+          };
+        }
+
+        function traceOrbit(offset) {
+          context.beginPath();
+          for (let pointIndex = 0; pointIndex <= 180; pointIndex++) {
+            const point = orbitPoint(pointIndex / 180 * Math.PI * 2, offset);
+            if (pointIndex === 0) context.moveTo(point.x, point.y);
+            else context.lineTo(point.x, point.y);
+          }
+        }
+
+        function drawEnergy() {
+          const goldLight = context.createLinearGradient(0, height * .8, width, height * .65);
+          goldLight.addColorStop(0, 'rgba(231,91,43,.36)');
+          goldLight.addColorStop(.24, 'rgba(243,148,65,.85)');
+          goldLight.addColorStop(.5, 'rgba(255,229,172,1)');
+          goldLight.addColorStop(.75, 'rgba(232,168,87,.8)');
+          goldLight.addColorStop(1, 'rgba(231,108,63,.25)');
+          context.save();
+          context.globalCompositeOperation = 'screen';
+          traceOrbit(0);
+          context.strokeStyle = goldLight;
+          context.shadowColor = 'rgba(232,149,59,.7)';
+          context.shadowBlur = 24;
+          context.globalAlpha = .08;
+          context.lineWidth = 28;
+          context.stroke();
+          context.globalAlpha = .2;
+          context.lineWidth = 5;
+          context.stroke();
+          context.globalAlpha = .75;
+          context.shadowBlur = 7;
+          context.lineWidth = 1.1;
+          context.stroke();
+
+          traceOrbit(.018);
+          context.globalAlpha = .18;
+          context.lineWidth = .7;
+          context.shadowBlur = 0;
+          context.stroke();
+
+          // 光点沿同一条星环移动，轨迹与背景形成一致的空间关系。
+          const time = motionPreference.matches ? 0 : elapsed * .000065;
+          for (let index = 0; index < 7; index++) {
+            const angle = time + index * Math.PI * 2 / 7;
+            const point = orbitPoint(angle);
+            const foreground = (Math.sin(angle) + 1) / 2;
+            context.globalAlpha = .3 + foreground * .55;
+            context.shadowBlur = 15;
+            context.shadowColor = '#e8b76c';
+            context.fillStyle = '#ffedc3';
+            context.beginPath();
+            context.arc(point.x, point.y, .9 + foreground * .8, 0, Math.PI * 2);
+            context.fill();
+            context.shadowBlur = 0;
+            for (let trail = 1; trail <= 8; trail++) {
+              const tailPoint = orbitPoint(angle - trail * .008);
+              context.globalAlpha = (1 - trail / 9) * .18;
+              context.beginPath();
+              context.arc(tailPoint.x, tailPoint.y, .8, 0, Math.PI * 2);
+              context.fill();
+            }
+          }
+
+          // 柔和的橙红流光穿过下方，控制点缓慢变化，避免机械旋转感。
+          const flow = motionPreference.matches ? 0 : Math.sin(elapsed * .00016) * height * .018;
+          context.beginPath();
+          context.moveTo(-width * .1, height * .85);
+          context.bezierCurveTo(width * .2, height * .56 + flow, width * .63, height * .92 - flow, width * 1.1, height * .55);
+          context.strokeStyle = goldLight;
+          context.globalAlpha = .14;
+          context.lineWidth = 12;
+          context.shadowBlur = 22;
+          context.shadowColor = '#e76c3f';
+          context.stroke();
+          context.globalAlpha = .28;
+          context.lineWidth = .9;
+          context.shadowBlur = 0;
+          context.stroke();
+          context.restore();
+        }
+
+        function draw() {
+          context.clearRect(0, 0, width, height);
+          for (const star of stars) {
+            // 留出标题区：装饰始终退到文字之后。
+            const starY = motionPreference.matches ? star.y : (star.y - elapsed * .002 * star.depth % height + height) % height;
+            const nearTitle = Math.abs(star.x - width / 2) < width * .3 && starY > height * .22 && starY < height * .62;
+            const twinkle = motionPreference.matches ? 1 : .8 + Math.sin(elapsed * .0005 + star.phase) * .2;
+            const opacity = star.brightness * twinkle * (nearTitle ? .25 : 1);
+            context.beginPath();
+            context.arc(star.x, starY, star.radius, 0, Math.PI * 2);
+            context.fillStyle = star.warm ? `rgba(246,195,122,${opacity})` : `rgba(174,195,225,${opacity})`;
+            context.fill();
+            if (star.radius > 1.25 && !nearTitle) {
+              context.strokeStyle = `rgba(255,220,163,${opacity * .4})`;
+              context.lineWidth = .6;
+              context.beginPath();
+              context.moveTo(star.x - 3, starY);
+              context.lineTo(star.x + 3, starY);
+              context.moveTo(star.x, starY - 3);
+              context.lineTo(star.x, starY + 3);
+              context.stroke();
+            }
+          }
+          drawEnergy();
+        }
+
+        function animate(timestamp) {
+          if (document.hidden || motionPreference.matches) { frameId = 0; return; }
+          if (!lastFrame) lastFrame = timestamp;
+          const delta = timestamp - lastFrame;
+          if (delta >= 1000 / 15) {
+            elapsed += Math.min(delta, 80);
+            lastFrame = timestamp;
+            draw();
+          }
+          frameId = requestAnimationFrame(animate);
+        }
+
+        function syncMotion() {
+          cancelAnimationFrame(frameId);
+          frameId = 0;
+          lastFrame = 0;
+          if (!document.hidden && !motionPreference.matches) frameId = requestAnimationFrame(animate);
+          else draw();
+          if (motionPreference.matches) {
+            scene.style.setProperty('--drift-x', '0px');
+            scene.style.setProperty('--drift-y', '0px');
+          }
+        }
+
+        scene.addEventListener('pointermove', (event) => {
+          if (event.pointerType !== 'mouse' || motionPreference.matches) return;
+          const bounds = scene.getBoundingClientRect();
+          scene.style.setProperty('--drift-x', `${((event.clientX - bounds.left) / width - .5) * 14}px`);
+          scene.style.setProperty('--drift-y', `${((event.clientY - bounds.top) / height - .5) * 10}px`);
+        }, { passive: true });
+        scene.addEventListener('pointerleave', () => {
+          scene.style.setProperty('--drift-x', '0px');
+          scene.style.setProperty('--drift-y', '0px');
+        });
+        window.addEventListener('resize', resize, { passive: true });
+        document.addEventListener('visibilitychange', syncMotion);
+        motionPreference.addEventListener('change', syncMotion);
+        resize();
+        syncMotion();
+      })();
+    </script>
+  </body>
+</html>

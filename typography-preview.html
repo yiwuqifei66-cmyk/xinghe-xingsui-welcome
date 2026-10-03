@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f5f1ea" />
+  <meta name="robots" content="noindex" />
+  <title>欢迎页 · 四种排版提案</title>
+  <style>
+    :root { color-scheme: light; --paper: #f5f1ea; --ink: #292821; --muted: #686158; --line: #d8d1c5; --accent: #704220; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font-family: "PingFang SC", "Microsoft YaHei", sans-serif; }
+    button, input, select { font: inherit; }
+    button, select { cursor: pointer; }
+    button, input, select { accent-color: var(--accent); }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+    ::selection { background: #e8d5b8; color: #292821; }
+    .review { max-width: 1600px; margin: auto; padding: 34px 32px 42px; }
+    .review-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; }
+    h1 { margin: 0; font-size: clamp(24px, 3vw, 36px); line-height: 1.25; letter-spacing: -.025em; font-weight: 600; }
+    .current-link { color: var(--muted); font-size: 14px; text-underline-offset: 4px; white-space: nowrap; }
+    .intro { max-width: 65ch; margin: 12px 0 24px; color: var(--muted); font-size: 16px; line-height: 1.7; }
+    .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 28px; padding: 18px 0 22px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .control { display: flex; align-items: center; gap: 10px; font-size: 14px; }
+    .control label { white-space: nowrap; }
+    input[type="text"], select { height: 38px; padding: 0 12px; border: 1px solid #bcb2a3; border-radius: 7px; color: var(--ink); background: #fffdf8; }
+    input[type="text"] { width: 110px; }
+    select { max-width: 180px; }
+    input[type="range"] { width: 100px; }
+    output { min-width: 38px; font-variant-numeric: tabular-nums; color: var(--muted); }
+    .reset { margin-left: auto; border: 0; border-bottom: 1px solid #8b7561; padding: 4px 0; background: transparent; color: var(--accent); }
+    .variants { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; margin-top: 28px; }
+    .variant { min-width: 0; padding-bottom: 16px; border-bottom: 2px solid transparent; }
+    .variant.is-picked { border-bottom-color: var(--accent); }
+    .variant-heading { display: flex; gap: 10px; align-items: baseline; }
+    .letter { font-size: 13px; color: var(--accent); font-weight: 700; }
+    h2 { margin: 0; font-size: 18px; font-weight: 600; }
+    .variant-summary { margin: 8px 0 16px; color: var(--muted); font-size: 14px; line-height: 1.6; min-height: 45px; }
+    .stage { width: 100%; aspect-ratio: 390 / 780; position: relative; overflow: hidden; background: #070b15; border-radius: 14px; }
+    .stage iframe { position: absolute; inset: 0 auto auto 0; width: 390px; height: 780px; border: 0; transform-origin: 0 0; }
+    .stage[data-ready="false"]::after { position: absolute; inset: 0; content: "字体准备中…"; display: grid; place-items: center; color: #e9d6b8; background: #070b15; font-size: 14px; pointer-events: none; }
+    .variant-footer { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 14px; }
+    .font-note { margin: 0; color: var(--muted); font-size: 12px; }
+    .actions { display: flex; gap: 10px; }
+    .actions a, .pick { padding: 5px 0; color: var(--accent); background: transparent; border: 0; text-decoration: none; font-size: 13px; }
+    .actions a { border-bottom: 1px solid #a28d77; }
+    .pick { min-width: 46px; font-weight: 600; }
+    .pick[aria-pressed="true"] { color: #3d4e2f; }
+    .selection { margin: 26px 0 0; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; line-height: 1.7; }
+    .selection strong { color: var(--ink); }
+    .font-sources { margin: 16px 0 0; color: var(--muted); font-size: 12px; line-height: 1.7; }
+    .font-sources a { color: inherit; text-underline-offset: 3px; }
+    @media (max-width: 1100px) { .variants { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px 24px; } .stage { max-width: 390px; } .reset { margin-left: 0; } }
+    @media (max-width: 600px) {
+      .review { padding: 24px 20px 32px; }
+      .review-heading { align-items: flex-start; gap: 16px; }
+      h1 { max-width: 8em; font-size: 25px; }
+      .current-link { font-size: 12px; padding-top: 6px; }
+      .intro { font-size: 14px; margin-bottom: 18px; }
+      .controls { gap: 14px 18px; padding-block: 16px; }
+      .control { flex-wrap: wrap; gap: 8px; font-size: 13px; }
+      input[type="text"] { width: 86px; }
+      select { width: 150px; padding-inline: 8px; }
+      .variants { grid-template-columns: minmax(0, 1fr); gap: 34px; }
+      .variant-summary { min-height: 0; }
+      .stage { margin-inline: auto; }
+    }
+  </style>
+</head>
+<body>
+  <main class="review">
+    <div class="review-heading">
+      <h1>欢迎页，四种排版提案</h1>
+      <a class="current-link" href="index.html">查看当前页面</a>
+    </div>
+    <p class="intro">同一个背景，同一句欢迎。下方统一用手机尺寸对比；切换字体、调整字号后，点“单独看”可以查看当前窗口的实际排版。</p>
+    <form class="controls" onsubmit="return false">
+      <div class="control"><label for="preview-name">示例姓名</label><input id="preview-name" type="text" value="小明" maxlength="16" autocomplete="off" /></div>
+      <div class="control"><label for="preview-font">字体</label><select id="preview-font"><option value="scheme">按方案搭配</option value="playful">站酷快乐体 · 活泼</option><option value="butter">黄油体 · 圆润</option></select></div>
+      <div class="control"><label for="preview-scale">字号</label><input id="preview-scale" type="range" min="85" max="115" step="5" value="100" /><output for="preview-scale" id="scale-output">100%</output></div>
+      <div class="control"><label for="preview-tracking">字距</label><input id="preview-tracking" type="range" min="0" max="12" step="1" value="4" /><output for="preview-tracking" id="tracking-output">0.04</output></div>
+      <button class="reset" type="button" id="reset-preview">恢复默认</button>
+    </form>
+    <section class="variants" aria-label="四种欢迎页排版对比">
+      <article class="variant" data-scheme="a">
+        <div class="variant-heading"><span class="letter">A</span><h2>姓名主角</h2></div>
+        <p class="variant-summary">先让小明感受到：<br />这份欢迎，是专门给我的。</p>
+        <div class="stage" data-ready="false"><iframe src="previews/a-name.html" title="方案 A：姓名主角" loading="eager"></iframe></div>
+        <div class="variant-footer"><p class="font-note">快乐体 · 姓名最大</p><div class="actions"><a href="previews/a-name.html" target="_blank" rel="noopener">单独看</a><button class="pick" type="button" aria-pressed="false" data-pick="a">暂选 A</button></div></div>
+      </article>
+      <article class="variant" data-scheme="b">
+        <div class="variant-heading"><span class="letter">B</span><h2>欢迎主角</h2></div>
+        <p class="variant-summary">第一眼就是一声欢迎，<br />情绪热烈，品牌和课程退后。</p>
+        <div class="stage" data-ready="false"><iframe src="previews/b-welcome.html" title="方案 B：欢迎主角" loading="eager"></iframe></div>
+        <div class="variant-footer"><p class="font-note">黄油体 · 欢迎最大</p><div class="actions"><a href="previews/b-welcome.html" target="_blank" rel="noopener">单独看</a><button class="pick" type="button" aria-pressed="false" data-pick="b">暂选 B</button></div></div>
+      </article>
+      <article class="variant" data-scheme="c">
+        <div class="variant-heading"><span class="letter">C</span><h2>课程主角</h2></div>
+        <p class="variant-summary">把注意力放在今天的体验，<br />让“线下体验课”成为主题。</p>
+        <div class="stage" data-ready="false"><iframe src="previews/c-course.html" title="方案 C：课程主角" loading="eager"></iframe></div>
+        <div class="variant-footer"><p class="font-note">快乐体 · 课程最大</p><div class="actions"><a href="previews/c-course.html" target="_blank" rel="noopener">单独看</a><button class="pick" type="button" aria-pressed="false" data-pick="c">暂选 C</button></div></div>
+      </article>
+      <article class="variant" data-scheme="d">
+        <div class="variant-heading"><span class="letter">D</span><h2>连贯邀请</h2></div>
+        <p class="variant-summary">像写给小明的一封短信，<br />左对齐，让整句话连贯读完。</p>
+        <div class="stage" data-ready="false"><iframe src="previews/d-sentence.html" title="方案 D：连贯邀请" loading="eager"></iframe></div>
+        <div class="variant-footer"><p class="font-note">黄油体 · 左对齐</p><div class="actions"><a href="previews/d-sentence.html" target="_blank" rel="noopener">单独看</a><button class="pick" type="button" aria-pressed="false" data-pick="d">暂选 D</button></div></div>
+      </article>
+    </section>
+    <p class="selection" id="selection-status" role="status">我更建议先看 <strong>A 的专属感</strong>和 <strong>B 的欢迎感</strong>。这里是方案预览，正式欢迎页等你选定后再调整。</p>
+    <p class="font-sources">字体：<a href="https://github.com/google/fonts/tree/main/ofl/zcoolkuaile" target="_blank" rel="noopener">站酷快乐体</a>、<a href="https://github.com/google/fonts/tree/main/ofl/zcoolqingkehuangyou" target="_blank" rel="noopener">站酷庆科黄油体</a>。两款字体均随预览保存在本地。</p>
+  </main>
+  <script>
+    (() => {
+      const frames = [...document.querySelectorAll('.stage iframe')];
+      const nameInput = document.querySelector('#preview-name');
+      const fontInput = document.querySelector('#preview-font');
+      const scaleInput = document.querySelector('#preview-scale');
+      const trackingInput = document.querySelector('#preview-tracking');
+      const scaleOutput = document.querySelector('#scale-output');
+      const trackingOutput = document.querySelector('#tracking-output');
+      const status = document.querySelector('#selection-status');
+      const initialStatus = status.innerHTML;
+      const fontFamilies = { playful: '"ZCOOL KuaiLe", sans-serif', butter: '"ZCOOL QingKe HuangYou", sans-serif' };
+      const schemeNames = { a: '姓名主角', b: '欢迎主角', c: '课程主角', d: '连贯邀请' };
+
+      function applySettings() {
+        scaleOutput.value = `${scaleInput.value}%`;
+        trackingOutput.value = (Number(trackingInput.value) / 100).toFixed(2);
+        for (const frame of frames) {
+          const doc = frame.contentDocument;
+          const name = doc?.querySelector('#attendee-name');
+          if (!name) continue;
+          name.textContent = nameInput.value.trim() || '小明';
+          doc.documentElement.style.setProperty('--type-scale', String(Number(scaleInput.value) / 100));
+          doc.documentElement.style.setProperty('--type-tracking', `${Number(trackingInput.value) / 100}em`);
+          if (fontInput.value === 'scheme') doc.documentElement.style.removeProperty('--preview-font');
+          else doc.documentElement.style.setProperty('--preview-font', fontFamilies[fontInput.value]);
+          const standaloneUrl = new URL(frame.getAttribute('src'), document.baseURI);
+          standaloneUrl.search = new URLSearchParams({ name: name.textContent, font: fontInput.value, scale: scaleInput.value, tracking: trackingInput.value }).toString();
+          frame.closest('.variant').querySelector('.actions a').href = standaloneUrl.href;
+        }
+      }
+
+      const resizeObserver = new ResizeObserver(entries => {
+        for (const entry of entries) entry.target.querySelector('iframe').style.transform = `scale(${entry.contentRect.width / 390})`;
+      });
+      for (const frame of frames) {
+        resizeObserver.observe(frame.parentElement);
+        frame.addEventListener('load', async () => {
+          applySettings();
+          await frame.contentDocument.fonts.ready;
+          frame.parentElement.dataset.ready = 'true';
+        });
+      }
+      for (const control of [nameInput, fontInput, scaleInput, trackingInput]) control.addEventListener('input', applySettings);
+      for (const pick of document.querySelectorAll('[data-pick]')) {
+        pick.addEventListener('click', () => {
+          for (const other of document.querySelectorAll('[data-pick]')) other.setAttribute('aria-pressed', String(other === pick));
+          for (const card of document.querySelectorAll('[data-scheme]')) card.classList.toggle('is-picked', card.dataset.scheme === pick.dataset.pick);
+          status.textContent = `当前暂选：${pick.dataset.pick.toUpperCase()} · ${schemeNames[pick.dataset.pick]}。你可以继续调字体、字号和字距，最后把喜欢的方案告诉我。`;
+        });
+      }
+      document.querySelector('#reset-preview').addEventListener('click', () => {
+        nameInput.value = '小明'; fontInput.value = 'scheme'; scaleInput.value = '100'; trackingInput.value = '4';
+        applySettings();
+        for (const pick of document.querySelectorAll('[data-pick]')) pick.setAttribute('aria-pressed', 'false');
+        for (const card of document.querySelectorAll('[data-scheme]')) card.classList.remove('is-picked');
+        status.innerHTML = initialStatus;
+      });
+    })();
+  </script>
+</body>
+</html>

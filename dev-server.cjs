@@ -7,6 +7,14 @@ const routes = new Map([
   ['/', { file: 'index.html', type: 'text/html; charset=utf-8' }],
   ['/index.html', { file: 'index.html', type: 'text/html; charset=utf-8' }],
   ['/assets/blue-star-spirit-animated.webp', { file: 'assets/blue-star-spirit-animated.webp', type: 'image/webp' }],
+  ['/typography-preview.html', { file: 'typography-preview.html', type: 'text/html; charset=utf-8' }],
+  ['/previews/a-name.html', { file: 'previews/a-name.html', type: 'text/html; charset=utf-8' }],
+  ['/previews/b-welcome.html', { file: 'previews/b-welcome.html', type: 'text/html; charset=utf-8' }],
+  ['/previews/c-course.html', { file: 'previews/c-course.html', type: 'text/html; charset=utf-8' }],
+  ['/previews/d-sentence.html', { file: 'previews/d-sentence.html', type: 'text/html; charset=utf-8' }],
+  ['/assets/fonts/preview-fonts.css', { file: 'assets/fonts/preview-fonts.css', type: 'text/css; charset=utf-8' }],
+  ['/assets/fonts/ZCOOLKuaiLe-Regular.ttf', { file: 'assets/fonts/ZCOOLKuaiLe-Regular.ttf', type: 'font/ttf' }],
+  ['/assets/fonts/ZCOOLQingKeHuangYou-Regular.ttf', { file: 'assets/fonts/ZCOOLQingKeHuangYou-Regular.ttf', type: 'font/ttf' }],
 ]);
 const server = http.createServer(async (request, response) => {
   const pathname = new URL(request.url, 'http://localhost').pathname;
