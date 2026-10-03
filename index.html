@@ -6,6 +6,8 @@
     <meta name="theme-color" content="#060d1c" />
     <meta name="description" content="欢迎来到星禾星穗线下体验课" />
     <title>欢迎来到星禾星穗线下体验课</title>
+    <link rel="preload" href="assets/fonts/ZCOOLKuaiLe-Regular.ttf" as="font" type="font/ttf" crossorigin />
+    <link rel="stylesheet" href="assets/fonts/preview-fonts.css" />
     <style>
       :root {
         color-scheme: dark;
@@ -92,10 +94,10 @@
         position: relative;
         isolation: isolate;
         width: 100%;
-        max-width: 1080px;
+        max-width: 860px;
         text-align: center;
-        padding: 40px 24px 58px;
-        margin-bottom: 7svh;
+        padding: 36px 14px 42px;
+        margin-bottom: 9svh;
       }
 
       .glass-halo {
@@ -135,9 +137,9 @@
 
       .opening-mark {
         display: block;
-        width: 28px;
-        height: 40px;
-        margin: 0 auto 22px;
+        width: 22px;
+        height: 30px;
+        margin: 0 auto 24px;
         color: var(--gold);
         opacity: 0;
         filter: drop-shadow(0 0 12px rgb(232 183 108 / 55%));
@@ -145,76 +147,57 @@
       }
 
       h1 { margin: 0; font-weight: 400; }
-      .greeting, .brand, .course { display: block; }
+      .recipient, .greeting, .brand, .course {
+        font-family: "ZCOOL KuaiLe", "PingFang SC", "Microsoft YaHei", sans-serif;
+        font-weight: 400;
+      }
+      .greeting, .brand, .course {
+        display: block;
+        line-height: 1.4;
+        letter-spacing: .04em;
+        overflow-wrap: anywhere;
+      }
 
       .recipient {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: baseline;
-        justify-content: center;
-        gap: .12em .3em;
-        margin: 0 auto 18px;
+        margin: 0 auto 30px;
         max-width: 100%;
         color: var(--mist);
-        font-size: clamp(18px, 1.7vw, 24px);
-        font-weight: 400;
+        font-size: 19px;
         line-height: 1.5;
-        letter-spacing: .08em;
+        letter-spacing: .035em;
         animation: text-in 1.25s .16s both;
       }
+
+      .recipient > span { display: block; }
 
       .recipient-name {
         min-width: 0;
         max-width: 100%;
-        color: #f3d5a5;
-        font-family: "Songti SC", "STSong", "SimSun", serif;
-        font-size: 1.3em;
-        line-height: 1.5;
+        margin-top: 8px;
+        color: #f6d998;
+        font-size: 62px;
+        line-height: 1.3;
+        letter-spacing: .04em;
         overflow-wrap: anywhere;
       }
 
       .greeting {
-        margin-bottom: 24px;
-        font-size: clamp(15px, 1.4vw, 19px);
-        font-weight: 400;
-        line-height: 1.6;
-        letter-spacing: .46em;
-        text-indent: .46em;
-        color: var(--mist);
+        margin-bottom: 14px;
+        font-size: 24px;
+        color: #fff1d5;
         animation: text-in 1.25s .5s both;
       }
 
       .brand {
-        font-family: "Songti SC", "STSong", "SimSun", serif;
-        font-size: clamp(48px, 10.2vw, 146px);
-        font-weight: 400;
-        line-height: 1.26;
-        letter-spacing: .11em;
-        text-indent: .11em;
-        white-space: nowrap;
-        animation: title-focus 1.7s .72s both;
-      }
-
-      .brand-ink {
-        color: var(--starlight);
-        background: linear-gradient(110deg, #c58943 0%, #f4c77e 16%, #fff1d3 35%, #fffaf0 44%, #f4d6a4 50%, #e1ac60 63%, #fff2db 78%, #cf924d 100%);
-        background-size: 220% 100%;
-        background-position: 85% 50%;
-        -webkit-background-clip: text;
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
-        filter: drop-shadow(0 0 22px rgb(232 183 108 / 19%));
-        animation: ink-reveal 2.4s .72s cubic-bezier(.22, 1, .36, 1) both;
+        font-size: 30px;
+        color: #edd4ac;
+        animation: text-in 1.25s .72s both;
       }
 
       .course {
-        margin-top: 29px;
-        color: #f1ddba;
-        font-size: clamp(20px, 2.2vw, 30px);
-        font-weight: 300;
-        line-height: 1.7;
-        letter-spacing: .36em;
-        text-indent: .36em;
+        margin-top: 10px;
+        color: #fff1d5;
+        font-size: 30px;
         animation: text-in 1.4s 1.05s both;
       }
 
@@ -223,7 +206,7 @@
         align-items: center;
         justify-content: center;
         gap: 16px;
-        margin: 32px auto 0;
+        margin: 28px auto 0;
         color: var(--gold);
         animation: mark-in 1.6s 1.35s both;
       }
@@ -308,18 +291,8 @@
       }
 
       @keyframes text-in {
-        from { opacity: 0; transform: translateY(16px); filter: blur(7px); }
-        to { opacity: 1; transform: translateY(0); filter: blur(0); }
-      }
-
-      @keyframes title-focus {
-        from { opacity: 0; transform: translateY(18px) scale(.975); filter: blur(9px); }
-        to { opacity: 1; transform: none; filter: blur(0); }
-      }
-
-      @keyframes ink-reveal {
-        from { background-position: 0% 50%; }
-        to { background-position: 85% 50%; }
+        from { opacity: 0; transform: translateY(16px); }
+        to { opacity: 1; transform: translateY(0); }
       }
 
       @keyframes glass-in {
@@ -340,15 +313,7 @@
       @keyframes scene-in { from { opacity: 0; } to { opacity: .8; } }
 
       @media (max-width: 600px) {
-        .welcome { padding-inline: 20px; }
-        .invitation { padding: 36px 0 42px; margin-bottom: 8svh; }
         .glass-halo { inset: 10px -2px 0; border-radius: 22px; }
-        .opening-mark { width: 23px; height: 34px; margin-bottom: 20px; }
-        .recipient { margin-bottom: 16px; font-size: 18px; }
-        .greeting { margin-bottom: 20px; font-size: 15px; }
-        .brand { font-size: clamp(43px, 14vw, 78px); letter-spacing: .075em; text-indent: .075em; }
-        .course { margin-top: 24px; font-size: 21px; letter-spacing: .28em; text-indent: .28em; }
-        .closing-mark { margin-top: 28px; }
         .pet-companion {
           right: max(14px, env(safe-area-inset-right));
           bottom: max(12px, env(safe-area-inset-bottom));
@@ -357,23 +322,17 @@
         .pet-speech { font-size: 14px; padding: 11px 15px; }
       }
 
-      @media (max-width: 340px) {
-        .brand { font-size: 40px; }
-        .course { font-size: 18px; }
-      }
-
       @media (max-height: 700px) and (max-width: 600px) {
         .welcome {
-          padding-top: max(24px, env(safe-area-inset-top));
+          padding-top: max(16px, env(safe-area-inset-top));
           padding-bottom: max(188px, calc(env(safe-area-inset-bottom) + 188px));
         }
-        .invitation { padding: 26px 0 28px; margin-bottom: 0; }
-        .opening-mark { width: 20px; height: 28px; margin-bottom: 14px; }
-        .recipient { margin-bottom: 10px; font-size: 17px; }
-        .greeting { margin-bottom: 14px; font-size: 14px; }
-        .brand { font-size: clamp(40px, 14vw, 60px); }
-        .course { margin-top: 16px; font-size: 18px; }
-        .closing-mark { margin-top: 20px; }
+        .invitation { padding: 16px 8px 18px; margin-bottom: 0; }
+        .opening-mark { margin-bottom: 14px; }
+        .recipient { margin-bottom: 20px; }
+        .recipient-name { font-size: min(62px, 19vw); }
+        .greeting { margin-bottom: 16px; }
+        .closing-mark { margin-top: 16px; }
       }
 
       @media (max-height: 500px) and (min-width: 601px) {
@@ -381,9 +340,9 @@
         .invitation { padding: 16px 24px 24px; margin-bottom: 0; }
         .opening-mark { width: 20px; height: 26px; margin-bottom: 12px; }
         .recipient { margin-bottom: 8px; font-size: 17px; }
-        .greeting { margin-bottom: 10px; font-size: 14px; }
-        .brand { font-size: clamp(46px, 8vw, 80px); }
-        .course { margin-top: 10px; font-size: 20px; }
+        .recipient-name { font-size: 48px; }
+        .greeting { margin-bottom: 10px; font-size: 22px; }
+        .brand, .course { font-size: 26px; }
         .closing-mark { margin-top: 18px; }
       }
 
@@ -422,7 +381,7 @@
         <p class="recipient"><span>亲爱的</span><span class="recipient-name" id="attendee-name">小明</span></p>
         <h1 aria-label="欢迎来到星禾星穗线下体验课">
           <span class="greeting">欢迎来到</span>
-          <span class="brand"><span class="brand-ink">星禾星穗</span></span>
+          <span class="brand">星禾星穗</span>
           <span class="course">线下体验课</span>
         </h1>
         <div class="closing-mark" aria-hidden="true">

@@ -2,19 +2,22 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const root = path.resolve(__dirname, '..');
-const source = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+const source = fs.readFileSync(path.join(root, 'index.html'), 'utf8')
+  .replace(/^    <link[^>]+href="assets\/fonts\/[^\"]+"[^>]*\/>\r?\n/gm, '');
 const common = `
   :root { --type-scale: 1; --type-tracking: .04em; }
   .welcome { padding-inline: 24px; }
   .invitation { max-width: 860px; padding: 36px 14px 42px; margin-bottom: 9svh; }
   .opening-mark { width: 22px; height: 30px; margin-bottom: 24px; }
-  .recipient { margin-bottom: 24px; font-family: var(--preview-font, var(--scheme-font)); font-size: 19px; letter-spacing: .035em; }
+  .recipient { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: center; gap: .12em .3em; margin-bottom: 24px; font-family: var(--preview-font, var(--scheme-font)); font-size: 19px; letter-spacing: .035em; }
+  .recipient > span { display: inline; }
   .recipient-name {
     font-family: var(--preview-font, var(--scheme-font));
     font-size: calc(var(--name-size) * var(--type-scale));
     line-height: 1.3;
     color: #f6d998;
     letter-spacing: var(--type-tracking);
+    margin-top: 0;
   }
   .greeting, .brand, .course {
     font-family: var(--preview-font, var(--scheme-font));
