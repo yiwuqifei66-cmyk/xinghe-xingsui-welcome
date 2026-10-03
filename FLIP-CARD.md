@@ -5,7 +5,7 @@
 ## 逐步实现原理
 
 1. **用原生 checkbox 保存状态。** `#route-toggle` 的 `checked` 为唯一状态源。没有隐藏输入，也没有用 `div` 模拟开关；Tab 能聚焦，空格原生切换。关联的 `label` 扩大可点击区域。JavaScript 不维护第二份正反面状态。
-2. **把两个面叠在同一个位置。** `.flip-card` 使用 Grid，正反面都设置 `grid-area: 1 / 1`。正面保留 A 版欢迎文案，背面以用户提供的路线图为主体。两个面分别使用不透明的深蓝与暖米白底色。
+2. **把两个面叠在同一个位置。** `.flip-card` 使用 Grid，正反面都设置 `grid-area: 1 / 1`。正面保留 A 版欢迎文案，用不透明的夜空蓝黑到暖棕渐变承接背景色调；背面用暖米白底，以用户提供的路线图为主体。
 3. **建立三维空间。** 外层 `.flip-stage` 设置 `perspective`，中间 `.flip-card` 设置 `transform-style: preserve-3d`。背面预先 `rotateY(180deg)`；checkbox 勾选时，通过后续兄弟选择器把整个卡片旋转 180°。
 4. **隐藏转向屏幕后方的面。** 两面均设置 `backface-visibility: hidden`。三维模式下不提前隐藏正面，旋转经过 90° 时由浏览器自然决定哪一面可见，避免中途露出镜像文字或突然空白。不要在 `.flip-card` 上添加透明度、filter、overflow:hidden 等会压平三维上下文的属性。
 5. **同步可访问性。** 原生 JS 只把非活动面设为 `aria-hidden` 与 `inert`，避免 Tab 落到卡片背后的链接。检测到浏览器不支持 `inert` 时，临时把非活动面控件的 `tabindex` 设为 -1，返回时恢复原值。浏览器从历史记录恢复 checkbox 状态时，`pageshow` 再同步一次。
@@ -21,7 +21,9 @@
 | `--card-width` | `640px` | 桌面最大宽度；窄屏自动不超过容器 |
 | `--card-height` | `500px` | 基础高度；支持 svh 时使用 `clamp(460px, 64svh, 540px)` |
 | `--card-radius` | `24px` | 两面圆角 |
-| `--card-front` | `#1b3048` | 正面不透明深蓝底 |
+| `--card-front` | `#211b22` | 正面中部暖深色，也是基础降级底色 |
+| `--card-front-top` | `#171c28` | 正面顶部蓝黑，与夜空呼应 |
+| `--card-front-bottom` | `#2c211e` | 正面底部暖棕，与橙金流光呼应 |
 | `--card-back` | `#f5efe2` | 背面不透明暖米白底 |
 | `--flip-perspective` | `1400px` | 透视距离；数值越小，纵深越强 |
 | `--flip-duration` | `640ms` | 翻面时长，建议 450–750ms |

@@ -16,14 +16,16 @@
         --starlight: #fff0d3;
         --gold: #e8b76c;
         --ember: #e76c3f;
-        --mist: #d1c8c2;
+        --mist: #d8cbbc;
         --drift-x: 0px;
         --drift-y: 0px;
         /* 翻面卡片可调参数：尺寸、透视距离、动画时长与实色底。 */
         --card-width: 640px;
         --card-height: 500px;
         --card-radius: 24px;
-        --card-front: #1b3048;
+        --card-front: #211b22;
+        --card-front-top: #171c28;
+        --card-front-bottom: #2c211e;
         --card-back: #f5efe2;
         --flip-perspective: 1400px;
         --flip-duration: 640ms;
@@ -148,7 +150,7 @@
         .flip-toggle:focus:not(:focus-visible),
         .flip-toggle:focus:not(:focus-visible) ~ .flip-control { outline: none; }
       }
-      @media (hover: hover) { .flip-control:hover { background: #25364b; } }
+      @media (hover: hover) { .flip-control:hover { background: #382c28; } }
 
       .flip-stage { grid-row: 1; grid-column: 1 / -1; min-width: 0; }
       .flip-card { display: grid; height: var(--card-height); }
@@ -167,6 +169,8 @@
         padding: 26px 24px;
         text-align: center;
         background: var(--card-front);
+        /* 三个色标都不透明：顶部承接夜色，底部呼应橙金流光。 */
+        background: linear-gradient(160deg, var(--card-front-top), var(--card-front) 58%, var(--card-front-bottom));
         overflow: auto;
       }
       .card-back {
