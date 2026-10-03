@@ -19,11 +19,21 @@
         --mist: #d1c8c2;
         --drift-x: 0px;
         --drift-y: 0px;
+        /* 翻面卡片可调参数：尺寸、透视距离、动画时长与实色底。 */
+        --card-width: 640px;
+        --card-height: 500px;
+        --card-radius: 24px;
+        --card-front: #1b3048;
+        --card-back: #f5efe2;
+        --flip-perspective: 1400px;
+        --flip-duration: 640ms;
+        --flip-easing: cubic-bezier(.22, 1, .36, 1);
       }
 
       *, *::before, *::after { box-sizing: border-box; }
       html { min-height: 100%; background: var(--night); }
       body {
+        position: relative;
         margin: 0;
         min-width: 280px;
         color: var(--starlight);
@@ -39,13 +49,16 @@
         min-height: 100vh;
         min-height: 100svh;
         overflow: hidden;
-        padding: max(40px, env(safe-area-inset-top)) 24px max(48px, env(safe-area-inset-bottom));
+        padding: max(40px, env(safe-area-inset-top)) 24px max(152px, calc(env(safe-area-inset-bottom) + 152px));
         background:
           radial-gradient(ellipse at 50% 37%, rgb(26 40 61 / 78%), transparent 54%),
           radial-gradient(ellipse at 5% 74%, rgb(126 41 25 / 30%), transparent 48%),
           radial-gradient(ellipse at 94% 75%, rgb(125 56 29 / 22%), transparent 42%),
           linear-gradient(180deg, #070b15, #11131f 60%, #100d13);
       }
+
+      /* clip 不创建内部滚动容器，键盘聚焦外部开关时不会把卡片顶部卷走。 */
+      @supports (overflow: clip) { .welcome { overflow: clip; } }
 
       .atmosphere {
         position: absolute;
@@ -90,60 +103,145 @@
         background: radial-gradient(ellipse at 50% 44%, transparent 37%, rgb(3 5 13 / 32%) 100%);
       }
 
-      .invitation {
-        position: relative;
-        isolation: isolate;
+      .flip-deck {
+        display: grid;
+        grid-template-columns: 22px minmax(0, 1fr);
+        align-items: center;
+        gap: 16px 12px;
         width: 100%;
-        max-width: 860px;
+        max-width: var(--card-width);
+      }
+
+      .flip-toggle {
+        grid-row: 2;
+        grid-column: 1;
+        width: 22px;
+        height: 22px;
+        margin: 0;
+        accent-color: var(--gold);
+        cursor: pointer;
+      }
+
+      .flip-control {
+        grid-row: 2;
+        grid-column: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        min-height: 44px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        color: #fff0d3;
+        font-size: 15px;
+        line-height: 1.5;
+        cursor: pointer;
+      }
+
+      .flip-control svg { width: 24px; height: 24px; flex-shrink: 0; pointer-events: none; }
+      .control-back { display: none; }
+      .flip-toggle:checked ~ .flip-control .control-front { display: none; }
+      .flip-toggle:checked ~ .flip-control .control-back { display: inline; }
+      .flip-toggle:focus { outline: 3px solid #fff0d3; outline-offset: 5px; }
+      .flip-toggle:focus ~ .flip-control { outline: 2px solid var(--gold); outline-offset: 3px; }
+      @supports selector(:focus-visible) {
+        .flip-toggle:focus:not(:focus-visible),
+        .flip-toggle:focus:not(:focus-visible) ~ .flip-control { outline: none; }
+      }
+      @media (hover: hover) { .flip-control:hover { background: #25364b; } }
+
+      .flip-stage { grid-row: 1; grid-column: 1 / -1; min-width: 0; }
+      .flip-card { display: grid; height: var(--card-height); }
+      .card-face {
+        grid-area: 1 / 1;
+        min-width: 0;
+        min-height: 0;
+        border-radius: var(--card-radius);
+        box-shadow: 0 22px 64px rgb(0 0 0 / 30%);
+      }
+      .card-front {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: center;
+        padding: 26px 24px;
         text-align: center;
-        padding: 36px 14px 42px;
-        margin-bottom: 9svh;
+        background: var(--card-front);
+        overflow: auto;
       }
-
-      .glass-halo {
-        position: absolute;
-        inset: 18px 5% 10px;
-        z-index: -1;
+      .card-back {
+        display: grid;
+        grid-template-rows: auto minmax(0, 1fr) auto;
+        gap: 12px;
+        padding: 20px;
+        background: var(--card-back);
+        color: #243652;
+        color-scheme: light;
+        visibility: hidden;
         pointer-events: none;
-        border-radius: 28px;
-        border: 1px solid rgb(232 183 108 / 14%);
-        background: linear-gradient(135deg, rgb(28 38 53 / 15%), rgb(12 16 25 / 28%) 55%, rgb(53 33 24 / 13%));
-        box-shadow: inset 0 1px 0 rgb(255 235 193 / 7%), 0 24px 100px rgb(0 0 0 / 12%);
-        backdrop-filter: blur(4px);
-        -webkit-backdrop-filter: blur(4px);
-        animation: glass-in 1.8s .35s both;
+      }
+      /* 默认是可用的二维切换；checkbox 的 checked 始终是唯一状态源。 */
+      .flip-toggle:checked ~ .flip-stage .card-front { visibility: hidden; pointer-events: none; }
+      .flip-toggle:checked ~ .flip-stage .card-back { visibility: visible; pointer-events: auto; }
+      @supports (height: 1svh) {
+        :root { --card-height: clamp(460px, 64svh, 540px); }
+      }
+      /* 检测通过才启用 3D。父级不能设置 overflow:hidden、filter 或 opacity<1，以免压平 3D。 */
+      @supports (transform-style: preserve-3d) and (backface-visibility: hidden) and (perspective: 1000px) {
+        .can-flip .flip-stage { perspective: var(--flip-perspective); }
+        .can-flip .flip-card {
+          transform-style: preserve-3d;
+          transform: rotateY(0deg);
+          transition: transform var(--flip-duration) var(--flip-easing);
+        }
+        .can-flip .card-face { backface-visibility: hidden; -webkit-backface-visibility: hidden; visibility: visible; }
+        .can-flip .flip-toggle:checked ~ .flip-stage .card-front { visibility: visible; }
+        .can-flip .card-back { transform: rotateY(180deg); }
+        .can-flip .flip-toggle:checked ~ .flip-stage .flip-card { transform: rotateY(180deg); }
       }
 
-      .glass-halo::before, .glass-halo::after {
-        content: "";
+      .route-heading { margin: 0; font-family: "ZCOOL KuaiLe", sans-serif; font-size: 24px; line-height: 1.4; }
+      .route-intro { margin: 6px 0 0; font-size: 13px; line-height: 1.6; color: #405475; }
+      .route-scroll {
+        min-height: 0;
+        overflow: auto;
+        border-radius: 8px;
+        scrollbar-color: #5c74a1 #e4dfd3;
+        scrollbar-width: thin;
+        background: #e4dfd3;
+      }
+      .route-scroll:focus { outline: 3px solid #254f95; outline-offset: 3px; }
+      .route-figure { margin: 0; }
+      .route-image { display: block; width: 100%; max-width: 476px; height: auto; margin-inline: auto; }
+      .route-caption { padding: 14px 16px; font-size: 13px; line-height: 1.8; color: #243652; }
+      .route-caption p { margin: 0 0 8px; font-weight: 600; }
+      .route-caption ol { margin: 0; padding-left: 20px; }
+      .route-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 12px; }
+      .route-footer p { margin: 0; color: #405475; font-size: 12px; line-height: 1.6; }
+      .route-save { display: inline-flex; align-items: center; min-height: 44px; color: #254f95; font-size: 14px; font-weight: 600; text-underline-offset: 4px; }
+      .route-save:focus { outline: 3px solid #254f95; outline-offset: 3px; border-radius: 4px; }
+      .sr-only {
         position: absolute;
-        left: 20%;
-        right: 20%;
+        width: 1px;
         height: 1px;
-        background: linear-gradient(90deg, transparent, rgb(255 219 157 / 58%), transparent);
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
       }
 
-      .glass-halo::before { top: -1px; }
-      .glass-halo::after { bottom: -1px; opacity: .5; }
-
-      .title-aura {
-        position: absolute;
-        inset: 14% -6% 16%;
-        z-index: -1;
-        pointer-events: none;
-        background: radial-gradient(ellipse at 50% 53%, rgb(231 151 74 / 14%), transparent 64%);
-        animation: aura-breathe 3.5s ease-in-out infinite;
-      }
+      ::selection { background: #e8b76c; color: #15263c; }
 
       .opening-mark {
         display: block;
         width: 22px;
         height: 30px;
-        margin: 0 auto 24px;
+        margin: 0 auto 18px;
         color: var(--gold);
-        opacity: 0;
-        filter: drop-shadow(0 0 12px rgb(232 183 108 / 55%));
-        animation: mark-in 1.6s .08s ease-out forwards;
+        opacity: .8;
+        pointer-events: none;
       }
 
       h1 { margin: 0; font-weight: 400; }
@@ -159,13 +257,12 @@
       }
 
       .recipient {
-        margin: 0 auto 30px;
+        margin: 0 auto 24px;
         max-width: 100%;
         color: var(--mist);
         font-size: 19px;
         line-height: 1.5;
         letter-spacing: .035em;
-        animation: text-in 1.25s .16s both;
       }
 
       .recipient > span { display: block; }
@@ -185,20 +282,17 @@
         margin-bottom: 14px;
         font-size: 24px;
         color: #fff1d5;
-        animation: text-in 1.25s .5s both;
       }
 
       .brand {
         font-size: 30px;
         color: #edd4ac;
-        animation: text-in 1.25s .72s both;
       }
 
       .course {
         margin-top: 10px;
         color: #fff1d5;
         font-size: 30px;
-        animation: text-in 1.4s 1.05s both;
       }
 
       .closing-mark {
@@ -206,9 +300,10 @@
         align-items: center;
         justify-content: center;
         gap: 16px;
-        margin: 28px auto 0;
+        margin: 24px auto 0;
         color: var(--gold);
-        animation: mark-in 1.6s 1.35s both;
+        opacity: .8;
+        pointer-events: none;
       }
 
       .closing-mark::before, .closing-mark::after {
@@ -222,7 +317,7 @@
       .closing-mark svg { width: 8px; height: 8px; }
 
       .pet-companion {
-        position: fixed;
+        position: absolute;
         z-index: 10;
         right: max(24px, env(safe-area-inset-right));
         bottom: max(18px, env(safe-area-inset-bottom));
@@ -290,34 +385,21 @@
         to { opacity: 1; transform: none; }
       }
 
-      @keyframes text-in {
-        from { opacity: 0; transform: translateY(16px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-
-      @keyframes glass-in {
-        from { opacity: 0; transform: perspective(1200px) rotateX(5deg) translateY(12px); }
-        to { opacity: 1; transform: none; }
-      }
-
-      @keyframes aura-breathe {
-        0%, 100% { opacity: .55; transform: scale(.97); }
-        50% { opacity: 1; transform: scale(1.03); }
-      }
-
-      @keyframes mark-in {
-        from { opacity: 0; transform: scale(.86); }
-        to { opacity: .8; transform: scale(1); }
-      }
-
       @keyframes scene-in { from { opacity: 0; } to { opacity: .8; } }
 
       @media (max-width: 600px) {
-        .glass-halo { inset: 10px -2px 0; border-radius: 22px; }
+        .welcome {
+          padding-top: max(24px, env(safe-area-inset-top));
+          padding-bottom: max(184px, calc(env(safe-area-inset-bottom) + 184px));
+          padding-inline: 20px;
+        }
+        .card-front { padding-inline: 18px; }
+        .card-back { padding: 14px; gap: 10px; }
+        .route-heading { font-size: 22px; }
         .pet-companion {
           right: max(14px, env(safe-area-inset-right));
           bottom: max(12px, env(safe-area-inset-bottom));
-          width: 108px;
+          width: 88px;
         }
         .pet-speech { font-size: 14px; padding: 11px 15px; }
       }
@@ -327,7 +409,6 @@
           padding-top: max(16px, env(safe-area-inset-top));
           padding-bottom: max(188px, calc(env(safe-area-inset-bottom) + 188px));
         }
-        .invitation { padding: 16px 8px 18px; margin-bottom: 0; }
         .opening-mark { margin-bottom: 14px; }
         .recipient { margin-bottom: 20px; }
         .recipient-name { font-size: min(62px, 19vw); }
@@ -336,8 +417,7 @@
       }
 
       @media (max-height: 500px) and (min-width: 601px) {
-        .welcome { padding-block: 28px; }
-        .invitation { padding: 16px 24px 24px; margin-bottom: 0; }
+        .welcome { padding-top: 28px; }
         .opening-mark { width: 20px; height: 26px; margin-bottom: 12px; }
         .recipient { margin-bottom: 8px; font-size: 17px; }
         .recipient-name { font-size: 48px; }
@@ -348,8 +428,13 @@
 
       @media (prefers-reduced-motion: reduce) {
         *, *::before, *::after { animation: none !important; transition: none !important; }
-        .opening-mark, .closing-mark { opacity: .8; }
         .tech-ground { opacity: .8; }
+        /* 降低动态效果时取消空间旋转，仍保留 checkbox 的正反面状态切换。 */
+        .can-flip .flip-card, .can-flip .card-back { transform: none; }
+        .can-flip .flip-toggle:checked ~ .flip-stage .flip-card { transform: none; }
+        .can-flip .card-back { visibility: hidden; }
+        .can-flip .flip-toggle:checked ~ .flip-stage .card-front { visibility: hidden; }
+        .can-flip .flip-toggle:checked ~ .flip-stage .card-back { visibility: visible; }
       }
     </style>
   </head>
@@ -371,9 +456,12 @@
       </svg>
       <div class="vignette" aria-hidden="true"></div>
 
-      <div class="invitation">
-        <div class="glass-halo" aria-hidden="true"></div>
-        <div class="title-aura" aria-hidden="true"></div>
+      <section class="flip-deck" aria-label="欢迎卡片与到校路线">
+        <!-- 不隐藏、不用 div 模拟：Tab 聚焦后空格直接切换原生 checked。 -->
+        <input class="flip-toggle" type="checkbox" id="route-toggle" aria-label="显示路线指引，取消勾选返回欢迎页" aria-controls="welcome-face route-face" aria-describedby="flip-help" />
+        <div class="flip-stage">
+          <div class="flip-card">
+            <section class="card-face card-front" id="welcome-face" aria-label="欢迎页面">
         <svg class="opening-mark" viewBox="0 0 28 40" fill="none" aria-hidden="true">
           <path d="M14 1C14 14 11 18 2 20C11 22 14 26 14 39C14 26 17 22 26 20C17 18 14 14 14 1Z" stroke="currentColor" stroke-width=".8" />
           <circle cx="14" cy="20" r="1.4" fill="currentColor" />
@@ -387,15 +475,95 @@
         <div class="closing-mark" aria-hidden="true">
           <svg viewBox="0 0 8 8"><path d="M4 0 5 3 8 4 5 5 4 8 3 5 0 4 3 3Z" fill="currentColor" /></svg>
         </div>
-      </div>
+            </section>
+            <section class="card-face card-back" id="route-face" aria-labelledby="route-heading">
+              <header>
+                <h2 class="route-heading" id="route-heading">广州校区路线指引</h2>
+                <p class="route-intro">大学城北 F 口出站，前往青蓝街 26，再乘电梯到 8 楼前台。</p>
+              </header>
+              <div class="route-scroll" tabindex="0" role="region" aria-label="完整路线图，可使用方向键上下滚动">
+                <figure class="route-figure">
+                  <img class="route-image" src="assets/guangzhou-route-guide.png" width="476" height="1174" alt="广州校区路线指引，共六步。文字版说明在图片下方。" />
+                  <figcaption class="route-caption">
+                    <p>按图中六步前往校区</p>
+                    <ol>
+                      <li>乘地铁 4 号或 12 号线到大学城北，走 F 口。</li>
+                      <li>出地铁站后左转，到马路对面。</li>
+                      <li>看到“青蓝街 26”后，往里面走。</li>
+                      <li>进门后往右前方走，路口右转。</li>
+                      <li>经过闸机后，乘电梯上 8 楼。</li>
+                      <li>出电梯后，到达星禾双语广州校区前台。</li>
+                    </ol>
+                  </figcaption>
+                </figure>
+              </div>
+              <footer class="route-footer">
+                <p>上下滑动查看完整路线图</p>
+                <a class="route-save" href="assets/guangzhou-route-guide.png" download="广州校区路线指引.png">保存路线图</a>
+              </footer>
+            </section>
+          </div>
+        </div>
+        <label class="flip-control" for="route-toggle">
+          <span class="control-front">查看路线指引</span><span class="control-back">返回欢迎页面</span>
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 8h10a4 4 0 0 1 0 8H9M5 8l3-3M5 8l3 3M9 16l3-3M9 16l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </label>
+        <p class="sr-only" id="flip-help">点击开关或文字翻面。键盘可使用 Tab 聚焦开关、空格切换。路线图区域可用方向键滚动。</p>
+      </section>
     </main>
     <aside class="pet-companion" aria-label="星小禾">
       <div class="pet-speech" id="pet-speech" role="status" aria-live="polite" hidden>星小禾欢迎你呀</div>
       <button class="pet-button" type="button" aria-label="和星小禾打招呼" aria-controls="pet-speech" aria-expanded="false">
-        <img src="assets/blue-star-spirit-animated.webp" width="384" height="488" alt="星小禾，戴着星星帽子的蓝色小精灵" draggable="false" />
+        <picture>
+          <source media="(prefers-reduced-motion: reduce)" srcset="assets/blue-star-spirit-still.png" />
+          <img src="assets/blue-star-spirit-animated.webp" width="384" height="488" alt="星小禾，戴着星星帽子的蓝色小精灵" draggable="false" />
+        </picture>
       </button>
     </aside>
     <script>
+      (() => {
+        const toggle = document.querySelector('#route-toggle');
+        const front = document.querySelector('#welcome-face');
+        const back = document.querySelector('#route-face');
+        const supportsInert = 'inert' in HTMLElement.prototype;
+        const supports3D = typeof CSS !== 'undefined' && typeof CSS.supports === 'function'
+          && CSS.supports('transform-style', 'preserve-3d')
+          && CSS.supports('backface-visibility', 'hidden')
+          && CSS.supports('perspective', '1000px');
+        const savedTabIndex = new WeakMap();
+
+        function setFaceActive(face, active) {
+          face.setAttribute('aria-hidden', String(!active));
+          if (supportsInert) {
+            face.inert = !active;
+          } else {
+            // 旧浏览器没有 inert 时，仍让背面的链接和滚动区退出 Tab 顺序。
+            for (const element of face.querySelectorAll('a, button, input, select, textarea, [tabindex]')) {
+              if (!active) {
+                if (!savedTabIndex.has(element)) savedTabIndex.set(element, element.getAttribute('tabindex'));
+                element.setAttribute('tabindex', '-1');
+              } else if (savedTabIndex.has(element)) {
+                const value = savedTabIndex.get(element);
+                if (value === null) element.removeAttribute('tabindex');
+                else element.setAttribute('tabindex', value);
+                savedTabIndex.delete(element);
+              }
+            }
+          }
+        }
+
+        function syncFaces() {
+          setFaceActive(front, !toggle.checked);
+          setFaceActive(back, toggle.checked);
+        }
+
+        toggle.addEventListener('change', syncFaces);
+        window.addEventListener('pageshow', syncFaces);
+        syncFaces();
+        if (supports3D) document.documentElement.classList.add('can-flip');
+        // JS 不控制 transform，也不另存布尔状态：CSS 只读取 :checked。
+      })();
+
       (() => {
         const button = document.querySelector('.pet-button');
         const speech = document.querySelector('.pet-speech');
@@ -596,7 +764,8 @@
         });
         window.addEventListener('resize', resize, { passive: true });
         document.addEventListener('visibilitychange', syncMotion);
-        motionPreference.addEventListener('change', syncMotion);
+        if (typeof motionPreference.addEventListener === 'function') motionPreference.addEventListener('change', syncMotion);
+        else if (typeof motionPreference.addListener === 'function') motionPreference.addListener(syncMotion);
         resize();
         syncMotion();
       })();

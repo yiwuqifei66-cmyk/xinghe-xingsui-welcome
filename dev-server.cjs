@@ -6,7 +6,10 @@ const port = Number(process.env.PORT || 4173);
 const routes = new Map([
   ['/', { file: 'index.html', type: 'text/html; charset=utf-8' }],
   ['/index.html', { file: 'index.html', type: 'text/html; charset=utf-8' }],
+  ['/welcome-flip-standalone.html', { file: 'welcome-flip-standalone.html', type: 'text/html; charset=utf-8' }],
+  ['/assets/guangzhou-route-guide.png', { file: 'assets/guangzhou-route-guide.png', type: 'image/png' }],
   ['/assets/blue-star-spirit-animated.webp', { file: 'assets/blue-star-spirit-animated.webp', type: 'image/webp' }],
+  ['/assets/blue-star-spirit-still.png', { file: 'assets/blue-star-spirit-still.png', type: 'image/png' }],
   ['/typography-preview.html', { file: 'typography-preview.html', type: 'text/html; charset=utf-8' }],
   ['/previews/a-name.html', { file: 'previews/a-name.html', type: 'text/html; charset=utf-8' }],
   ['/previews/b-welcome.html', { file: 'previews/b-welcome.html', type: 'text/html; charset=utf-8' }],
